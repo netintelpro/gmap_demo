@@ -21,6 +21,14 @@ window.Vue = require('vue').default;
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+import * as VueGoogleMaps from 'vue2-google-maps'
+Vue.use(VueGoogleMaps, {
+    load: {
+        key: 'AIzaSyBIdjI1RqCr1DglwcDRZYsj0Wncy3l3vkk',
+        libraries: 'places',
+    }
+});
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

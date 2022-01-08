@@ -21,7 +21,7 @@
             html,
             body {
                 height: 100%;
-                margin: 0;
+                margin: 0 0 0 5%;
                 padding: 0;
             }
         </style>
@@ -33,27 +33,34 @@
         </style>
     </head>
     <body>
+    <div class="flex-center position-ref full-height">
+        <div class="content">
+            <h1>Demo</h1>
+            <div>
+                <form>
+                    <label for="start">Start date:</label>
 
-    <div id="map"></div>
+                    <input type="date" id="start" name="start">
 
+                    <label for="end">End date:</label>
 
-    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key={{config('services.google.key')}}&callback=initMap&v=weekly&channel=2"
-        async
-    ></script>
-    <script>
-        let map;
+                    <input type="date" id="end" name="end">
 
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: JSON.parse('@json(config('google.maps.austin'))', (key, value) => {
-                    return (!isNaN(value) ? parseFloat(value): value);
-                }),
-                zoom: 10,
-            });
-        }
-    </script>
+                    <label for="address">Address</label>
+                    <input type="address">
+                </form>
 
+            </div>
+            <div class="map" id="app">
+                <gmap-map
+                    :center=@json(config('google.maps.austin'),JSON_NUMERIC_CHECK)
+                    :zoom="7"
+                    style="width:50%; height: 320px;"
+                ></gmap-map>
+            </div>
+        </div>
+
+    </div>
+    <script src="{{mix('js/app.js')}}"></script>
     </body>
 </html>
