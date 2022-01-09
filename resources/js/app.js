@@ -24,6 +24,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('form-component', FormComponent);
 
 import * as VueGoogleMaps from 'vue2-google-maps'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
 Vue.use(VueGoogleMaps, {
     load: {
         key: 'AIzaSyBIdjI1RqCr1DglwcDRZYsj0Wncy3l3vkk',
