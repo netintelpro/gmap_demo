@@ -5314,9 +5314,39 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+  },
+  data: function data() {
+    return {
+      impacts: [],
+      events: []
+    };
+  },
+  methods: {
+    submitForm: function submitForm(e) {
+      var _this = this;
+
+      e.preventDefault();
+      axios.get('/api/impacts').then(function (response) {
+        return _this.impacts = response.data;
+      })["catch"](function (error) {
+        return console.error(error);
+      });
+    }
   }
 });
 
@@ -29180,29 +29210,84 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", [
+    _c("form", [
+      _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._m(2),
+      _vm._v(" "),
+      _vm._m(3),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "btn btn-primary",
+        attrs: { type: "submit", value: "Submit" },
+        on: {
+          click: function ($event) {
+            return _vm.submitForm($event)
+          },
+        },
+      }),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "btn btn-primary",
+        attrs: { type: "reset", value: "Reset" },
+      }),
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", [
-      _c("form", [
-        _c("label", { attrs: { for: "start" } }, [_vm._v("Start date:")]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "date", id: "start", name: "start" } }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "end" } }, [_vm._v("End date:")]),
-        _vm._v(" "),
-        _c("input", { attrs: { type: "date", id: "end", name: "end" } }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "address" } }, [_vm._v("Address")]),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "address", id: "address", name: "address" },
-        }),
-      ]),
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "start_date" } }, [_vm._v("Start Date:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "date", id: "start_date", name: "start_date" },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "end_date" } }, [_vm._v("End Date:")]),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "date", id: "end_date", name: "end_date" },
+      }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("label", { attrs: { for: "address" } }, [_vm._v("Street")]),
+      _vm._v(" "),
+      _c("input", { attrs: { type: "text", id: "address", name: "address" } }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group" }, [
+      _c("input", {
+        attrs: { type: "checkbox", name: "type[]", value: "event" },
+      }),
+      _vm._v(" Event"),
+      _c("br"),
+      _vm._v(" "),
+      _c("input", {
+        attrs: { type: "checkbox", name: "type[]", value: "impact" },
+      }),
+      _vm._v(" Impact"),
+      _c("br"),
     ])
   },
 ]
