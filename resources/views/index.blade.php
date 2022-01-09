@@ -36,22 +36,8 @@
     <div class="flex-center position-ref full-height">
         <div class="content">
             <h1>Demo</h1>
-            <div>
-                <form>
-                    <label for="start">Start date:</label>
-
-                    <input type="date" id="start" name="start">
-
-                    <label for="end">End date:</label>
-
-                    <input type="date" id="end" name="end">
-
-                    <label for="address">Address</label>
-                    <input type="address">
-                </form>
-
-            </div>
             <div class="map" id="app">
+                <form-component></form-component>
                 <gmap-map
                     :center=@json(config('google.maps.austin'),JSON_NUMERIC_CHECK)
                     :zoom="7"
