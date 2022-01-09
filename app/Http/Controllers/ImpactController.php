@@ -14,20 +14,8 @@ class ImpactController extends Controller
         $endDate = $request->get('end_date') ?? null;
         $address = $request->get('address') ?? null;
 
-        $impacts = Impact::whereHas('event', function (Builder $query) use ($startDate, $endDate, $address) {
-            if ($startDate) {
-                $query->where('start_date_time', '>=', $startDate);
-            }
+        $impacts = Impact::getImpactsByParams($startDate,$endDate,$address);
 
-            if ($endDate) {
-                $query->where('end_date_time', '<=', $endDate);
-            }
-
-            if ($address) {
-                $query->where('address1', 'like', "%$address%");
-            }
-
-        })->get();
         return response()->json($impacts);
     }
 }

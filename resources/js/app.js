@@ -16,17 +16,15 @@ window.Vue = require('vue').default;
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
-import FormComponent from './components/FormComponent.vue';
+const files = require.context('./', true, /\.vue$/i)
+files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('form-component', FormComponent);
 
 import * as VueGoogleMaps from 'vue2-google-maps'
-import Vuex from 'vuex'
+import store from './Store/index';
 
-Vue.use(Vuex)
+
+
 Vue.use(VueGoogleMaps, {
     load: {
         key: 'AIzaSyBIdjI1RqCr1DglwcDRZYsj0Wncy3l3vkk',
@@ -42,4 +40,5 @@ Vue.use(VueGoogleMaps, {
 
 const app = new Vue({
     el: '#app',
+    store,
 });
