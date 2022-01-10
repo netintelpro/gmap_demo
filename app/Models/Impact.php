@@ -29,37 +29,25 @@ class Impact extends Model
      */
     public static function locations($params)
     {
-        //dd($params);
         $events = Event::where(function (Builder $query) use ($params) {
             if ($params['start_date']) {
                 $query->whereDate('start_date_time', '>=',
-                    Carbon::createFromFormat('Y-m-d', $params['start_date'])
-                        ->format('Y-m-d'));
+                    Carbon::createFromFormat('Y-m-d', $params['start_date']));
 
             }
 
             if ($params['end_date']) {
                 // Dont confuse db column end_date_time with form end_date search parameter
                 $query->whereDate('start_date_time', '<=',
-                    Carbon::createFromFormat('Y-m-d',  $params['end_date'])
-                        ->format('Y-m-d'));
+                    Carbon::createFromFormat('Y-m-d',  $params['end_date']));
             }
-
-            /*if ($params['start_date'] || $params['end_date']) {
-                $query->whereBetween('start_date_time',
-                    [
-                        Carbon::createFromFormat('Y-m-d', $params['start_date']),
-                        Carbon::createFromFormat('Y-m-d',  $params['end_date'])
-                    ]);
-
-            }*/
 
 
             if ($params['address']) {
                 $query->where('address1', 'like', "%".$params['address']."%");
             }
 
-        })->take(40)->get(['latitude', 'longitude', 'title' ]);
+        })->get(['latitude', 'longitude', 'title' ]);
 
         $locations = $events->map(function ($event) {
             return (object)[
@@ -68,8 +56,6 @@ class Impact extends Model
                 'title' => $event->title,
             ];
         })->unique();
-
-        dd($locations);
 
         return $locations;
 
