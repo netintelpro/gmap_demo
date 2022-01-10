@@ -9,7 +9,6 @@ class PageController extends Controller
 {
     public function index(Request $request)
     {
-
         return view('index')->with([
             'locations' => collect([]),
             'center' => $this->getCenter(),
@@ -18,14 +17,8 @@ class PageController extends Controller
 
     public function getMarkers(Request $request)
     {
-        $startDate = $request->get('start_date') ?? null;
-        $endDate = $request->get('end_date') ?? null;
-        $address = $request->get('address') ?? null;
-
-        $locations = Impact::locations($startDate,$endDate,$address);
-
         return view('index')->with([
-            'locations' => $locations,
+            'locations' => Impact::locations($request->all()),
             'center' => $this->getCenter(),
         ]);
     }

@@ -26,20 +26,20 @@ class Impact extends Model
      * @param null $address
      * @return mixed
      */
-    public static function locations($startDate = null, $endDate = null, $address = null)
+    public static function locations($params)
     {
 
-        $events = Event::where(function (Builder $query) use ($startDate, $endDate, $address) {
-            if ($startDate) {
-                $query->where('start_date_time', '=>', $startDate);
+        $events = Event::where(function (Builder $query) use ($params) {
+            if ($params['start_date']) {
+                $query->where('start_date_time', '>=', $params['start_date']);
             }
 
-            if ($endDate) {
-                $query->where('end_date_time', '=<', $endDate);
+            if ($params['end_date']) {
+                $query->where('end_date_time', '<=', $params['end_date']);
             }
 
-            if ($address) {
-                $query->where('address1', 'like', "%$address%");
+            if ($params['address']) {
+                $query->where('address1', 'like', "%".$params['address']."%");
             }
 
         })->take(40)->get(['latitude', 'longitude', 'title' ]);
@@ -48,7 +48,7 @@ class Impact extends Model
             return (object)[
                 'lat' => $event->latitude,
                 'lng' => $event->longitude,
-                'title' => "$event->title",
+                'title' => $event->title,
             ];
         })->unique();
 
