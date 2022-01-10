@@ -39,18 +39,20 @@
             <div class="map" id="app">
                 <form-component></form-component>
                 <gmap-map
-                    :center=@json(config('google.maps.austin'),JSON_NUMERIC_CHECK)
+                    :center={{$center}}
                     :zoom="7"
                     style="width:50%; height: 320px;"
-                ></gmap-map>
-                <gmap-marker
-                    v-for="(impact, index) in impacts"
-                    :key="impact.id"
-                    :position="{lat:impact.event.latitude, lng:impact.event.longitude}"
-                    :clickable="true"
-                    :draggable="false"
-                    @click="handleMarkerClicked(i)"
-                ></gmap-marker>
+                >
+                    <gmap-marker
+                        v-for="(location, index) in {{$locations}}"
+                        :key="index"
+                        :position="getPosition(location)"
+                        :clickable="true"
+                        :draggable="false"
+                    ></gmap-marker>
+
+                </gmap-map>
+
             </div>
         </div>
 

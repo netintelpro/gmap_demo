@@ -18,15 +18,17 @@
 </template>
 
 <script>
+    import FormComponent from "./FormComponent.vue";
+
     export default {
+
         name: "GoogleMap",
         props: {
-            center: Object,
+            center: String,
             impacts: Object,
-        }
+        },
     }
 </script>
-
 <style scoped>
 
 </style>

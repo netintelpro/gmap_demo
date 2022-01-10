@@ -21,7 +21,7 @@ files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(
 
 
 import * as VueGoogleMaps from 'vue2-google-maps'
-import store from './Store/index';
+import store from './store/index';
 
 
 
@@ -40,5 +40,12 @@ Vue.use(VueGoogleMaps, {
 
 const app = new Vue({
     el: '#app',
-    store,
+    methods: {
+        getPosition(location) {
+            return {
+                lat: parseFloat(location.latitude),
+                lng: parseFloat(location.longitude)
+            }
+        },
+    }
 });

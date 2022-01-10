@@ -26,9 +26,9 @@ class Impact extends Model
      * @param null $address
      * @return mixed
      */
-    public static function getImpactsByParams($startDate = null, $endDate = null, $address = null)
+    public static function locations($startDate = null, $endDate = null, $address = null)
     {
-        return Impact::whereHas('event', function (Builder $query) use ($startDate, $endDate, $address) {
+        $impacts =  Impact::whereHas('event', function (Builder $query) use ($startDate, $endDate, $address) {
             if ($startDate) {
                 $query->where('start_date_time', '>=', $startDate);
             }
@@ -41,7 +41,25 @@ class Impact extends Model
                 $query->where('address1', 'like', "%$address%");
             }
 
-        })->get();
+        })->take(10)->get();
+
+        $locations = $impacts->map(function ($impact, $key) {
+            $event = $impact->event()->first();
+            return (object)[
+                'id' => $event->id,
+                'lat' => $event->latitude,
+                'lng' => $event->longitude,
+            ];
+            /*$locationString = json_encode([
+                'lat' => $event->latitude,
+                'lng' => $event->longitude,
+            ], JSON_NUMERIC_CHECK);*/
+
+            /*$locationString = preg_replace('/"([a-zA-Z]+[a-zA-Z0-9_]*)":/','$1:', $locationString);
+            return json_encode($locationString);*/
+        });
+
+        return $locations;
 
     }
 }

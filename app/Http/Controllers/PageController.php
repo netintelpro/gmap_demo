@@ -9,12 +9,19 @@ class PageController extends Controller
 {
     public function index()
     {
-        $impacts = Impact::getImpactsByParams();
-        //dd($impacts);
 
-        return view('index')->with([
+        $center = json_encode(config('google.maps.austin'), JSON_NUMERIC_CHECK);
+        $center = preg_replace('/"([a-zA-Z]+[a-zA-Z0-9_]*)":/','$1:',$center);
+
+        $locations = Impact::locations();
+        /*dd([
+            'center' => $center,
             'impacts' => $impacts,
+        ]);*/
+        return view('index')->with([
+            'locations' => $locations,
             'events' => [],
+            'center' => $center,
         ]);
     }
 
@@ -24,7 +31,7 @@ class PageController extends Controller
         $endDate = $request->get('end_date') ?? null;
         $address = $request->get('address') ?? null;
 
-        $impacts = Impact::getImpactsByParams($startDate,$endDate,$address);
+        $impacts = Impact::locations($startDate,$endDate,$address);
 
         return view('index')->with([
             'impacts' => $impacts,
