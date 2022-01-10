@@ -39,14 +39,14 @@
             <div class="map" id="app">
                 <form action="{{route('getMarkers')}}" method="post">
                     @csrf
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="start_date">Start Date:</label>
                         <input type="date" id="start_date" name="start_date">
                     </div>
                     <div class="form-group">
                         <label for="end_date">End Date:</label>
                         <input type="date" id="end_date" name="end_date">
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="address">Street</label>
                         <input type="text" id="address" name="address">

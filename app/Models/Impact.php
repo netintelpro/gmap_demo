@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,15 +29,31 @@ class Impact extends Model
      */
     public static function locations($params)
     {
-
+        //dd($params);
         $events = Event::where(function (Builder $query) use ($params) {
             if ($params['start_date']) {
-                $query->where('start_date_time', '>=', $params['start_date']);
+                $query->whereDate('start_date_time', '>=',
+                    Carbon::createFromFormat('Y-m-d', $params['start_date'])
+                        ->format('Y-m-d'));
+
             }
 
             if ($params['end_date']) {
-                $query->where('end_date_time', '<=', $params['end_date']);
+                // Dont confuse db column end_date_time with form end_date search parameter
+                $query->whereDate('start_date_time', '<=',
+                    Carbon::createFromFormat('Y-m-d',  $params['end_date'])
+                        ->format('Y-m-d'));
             }
+
+            /*if ($params['start_date'] || $params['end_date']) {
+                $query->whereBetween('start_date_time',
+                    [
+                        Carbon::createFromFormat('Y-m-d', $params['start_date']),
+                        Carbon::createFromFormat('Y-m-d',  $params['end_date'])
+                    ]);
+
+            }*/
+
 
             if ($params['address']) {
                 $query->where('address1', 'like', "%".$params['address']."%");
