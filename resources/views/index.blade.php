@@ -46,7 +46,9 @@
                     <gmap-marker
                         v-for="(location, index) in {{$locations}}"
                         :key="index"
-                        :position="getPosition(location)"
+                        :label="location.title"
+                        :title="location.title"
+                        :position="{lat:location.lat, lng:location.lng}"
                         :clickable="true"
                         :draggable="false"
                     ></gmap-marker>

@@ -5382,6 +5382,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "GoogleMap",
@@ -29488,26 +29491,30 @@ var render = function () {
         attrs: { center: _vm.center, zoom: 7 },
       }),
       _vm._v(" "),
-      _vm._l(_vm.impacts, function (impact, index) {
-        return _c("gmap-marker", {
-          key: impact.id,
-          attrs: {
-            position: {
-              lat: impact.event.latitude,
-              lng: impact.event.longitude,
+      _c(
+        "gmap-cluster",
+        _vm._l(_vm.impacts, function (impact, index) {
+          return _c("gmap-marker", {
+            key: impact.id,
+            attrs: {
+              position: {
+                lat: impact.event.latitude,
+                lng: impact.event.longitude,
+              },
+              clickable: true,
+              draggable: false,
             },
-            clickable: true,
-            draggable: false,
-          },
-          on: {
-            click: function ($event) {
-              return _vm.handleMarkerClicked(_vm.i)
+            on: {
+              click: function ($event) {
+                return _vm.handleMarkerClicked(_vm.i)
+              },
             },
-          },
-        })
-      }),
+          })
+        }),
+        1
+      ),
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []

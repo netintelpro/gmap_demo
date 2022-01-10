@@ -41,14 +41,23 @@ class Impact extends Model
                 $query->where('address1', 'like', "%$address%");
             }
 
-        })->take(10)->get();
+        })->get();
 
-        $locations = $impacts->map(function ($impact, $key) {
+        $locations = $impacts->map(function ($impact) {
+
+            if (empty($impact->event_id)) {
+                return (object)[
+                    'lat' => $impact->user->latitude,
+                    'lng' => $impact->user->longitude,
+                    'title' => "$impact->user->first_name $impact->user->last_name",
+                ];
+            }
             $event = $impact->event()->first();
+
             return (object)[
-                'id' => $event->id,
                 'lat' => $event->latitude,
                 'lng' => $event->longitude,
+                'title' => "$event->title - $event->id",
             ];
             /*$locationString = json_encode([
                 'lat' => $event->latitude,
@@ -59,7 +68,7 @@ class Impact extends Model
             return json_encode($locationString);*/
         });
 
-        return $locations;
+        return $locations->unique();
 
     }
 }
