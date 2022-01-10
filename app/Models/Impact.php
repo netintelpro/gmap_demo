@@ -28,47 +28,33 @@ class Impact extends Model
      */
     public static function locations($startDate = null, $endDate = null, $address = null)
     {
-        $impacts =  Impact::whereHas('event', function (Builder $query) use ($startDate, $endDate, $address) {
+
+        $events = Event::where(function (Builder $query) use ($startDate, $endDate, $address) {
             if ($startDate) {
-                $query->where('start_date_time', '>=', $startDate);
+                $query->where('start_date_time', '=>', $startDate);
             }
 
             if ($endDate) {
-                $query->where('end_date_time', '<=', $endDate);
+                $query->where('end_date_time', '=<', $endDate);
             }
 
             if ($address) {
                 $query->where('address1', 'like', "%$address%");
             }
 
-        })->get();
+        })->take(40)->get(['latitude', 'longitude', 'title' ]);
 
-        $locations = $impacts->map(function ($impact) {
-
-            if (empty($impact->event_id)) {
-                return (object)[
-                    'lat' => $impact->user->latitude,
-                    'lng' => $impact->user->longitude,
-                    'title' => "$impact->user->first_name $impact->user->last_name",
-                ];
-            }
-            $event = $impact->event()->first();
-
+        $locations = $events->map(function ($event) {
             return (object)[
                 'lat' => $event->latitude,
                 'lng' => $event->longitude,
-                'title' => "$event->title - $event->id",
+                'title' => "$event->title",
             ];
-            /*$locationString = json_encode([
-                'lat' => $event->latitude,
-                'lng' => $event->longitude,
-            ], JSON_NUMERIC_CHECK);*/
+        })->unique();
 
-            /*$locationString = preg_replace('/"([a-zA-Z]+[a-zA-Z0-9_]*)":/','$1:', $locationString);
-            return json_encode($locationString);*/
-        });
+        dd($locations);
 
-        return $locations->unique();
+        return $locations;
 
     }
 }

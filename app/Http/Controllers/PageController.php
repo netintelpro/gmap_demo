@@ -7,21 +7,12 @@ use Illuminate\Http\Request;
 
 class PageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
-        $center = json_encode(config('google.maps.austin'), JSON_NUMERIC_CHECK);
-        $center = preg_replace('/"([a-zA-Z]+[a-zA-Z0-9_]*)":/','$1:',$center);
-
-        $locations = Impact::locations();
-        /*dd([
-            'center' => $center,
-            'impacts' => $impacts,
-        ]);*/
         return view('index')->with([
-            'locations' => $locations,
-            'events' => [],
-            'center' => $center,
+            'locations' => collect([]),
+            'center' => $this->getCenter(),
         ]);
     }
 
@@ -31,11 +22,17 @@ class PageController extends Controller
         $endDate = $request->get('end_date') ?? null;
         $address = $request->get('address') ?? null;
 
-        $impacts = Impact::locations($startDate,$endDate,$address);
+        $locations = Impact::locations($startDate,$endDate,$address);
 
         return view('index')->with([
-            'impacts' => $impacts,
-            'events' => [],
+            'locations' => $locations,
+            'center' => $this->getCenter(),
         ]);
+    }
+
+    private function getCenter()
+    {
+        return preg_replace('/"([a-zA-Z]+[a-zA-Z0-9_]*)":/','$1:',
+            json_encode(config('google.maps.austin'), JSON_NUMERIC_CHECK));
     }
 }

@@ -37,11 +37,28 @@
         <div class="content">
             <h1>Demo</h1>
             <div class="map" id="app">
-                <form-component></form-component>
+                <form action="{{route('getMarkers')}}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="start_date">Start Date:</label>
+                        <input type="date" id="start_date" name="start_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date:</label>
+                        <input type="date" id="end_date" name="end_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Street</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" value="Submit" >
+
+                </form>
                 <gmap-map
                     :center={{$center}}
-                    :zoom="7"
-                    style="width:50%; height: 320px;"
+                    :zoom="10"
+                    style="width:60%; height: 400px;"
                 >
                     <gmap-marker
                         v-for="(location, index) in {{$locations}}"
